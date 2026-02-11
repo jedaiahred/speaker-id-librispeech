@@ -1,0 +1,19 @@
+{
+  "input_shape": [
+    60,
+    313
+  ],
+  "atten_num_heads": 4,
+  "atten_key_dim": 15,
+  "dense1_units": 512,
+  "dense2_units": 1024,
+  "conv_filters": 256,
+  "conv_kernel_size": 128,
+  "conv_padding": "causal",
+  "conv_activation": "relu",
+  "dense1_kernel_reg": "orthogonal columns",
+  "dense2_kernel_reg": "orthogonal rows",
+  "logits_kernel_reg": "orthogonal columns",
+  "dropout": 0.1,
+  "n_classes": 317
+}

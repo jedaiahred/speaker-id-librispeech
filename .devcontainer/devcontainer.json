@@ -1,0 +1,48 @@
+{
+  "name": "TensorFlow 25.02 Dev",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  // Where VS Code will "see" the workspace inside the container
+  "workspaceFolder": "/workspace",
+
+  // Bind-mount your local project into the container
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+
+  // Give the container access to your GPU
+  "runArgs": [
+    "--gpus", "all",
+    "--shm-size=8g"
+  ],
+
+  // Use root for simplicity (you can make a non-root user later if you want)
+  "remoteUser": "root",
+
+  // Ports you might want (Jupyter, TensorBoard, etc.)
+  "forwardPorts": [8888, 6006],
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "ms-azuretools.vscode-docker",
+        "ms-vscode-remote.remote-containers",
+        "ms-python.black-formatter"
+      ],
+      "settings": {
+        // NGC TF images typically have Python on PATH; this is a safe default.
+        // If needed, you can adjust to the exact python path inside the container.
+        "python.defaultInterpreterPath": "python",
+        "python.formatting.provider": "black",
+        "jupyter.askForKernelRestart": false
+      }
+    }
+  },
+
+  // Optional: run something after the container is created
+//  "postCreateCommand": "python -m pip install --upgrade pip" [DO NOT USE - EXAMPLE ONLY - THIS IS DONE IN DOCKERFILE]
+}
