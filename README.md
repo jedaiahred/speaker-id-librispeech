@@ -37,7 +37,7 @@ A speaker identification pipeline built with TensorFlow and trained on the Libri
 A custom subclassed Keras model with a transformer-inspired design:
 
 1. **Permute** — reorients input so attention operates over the time axis.
-2. **Layer Normalization** — stabilizes attention inputs.
+2. **Layer Normalization** — normalizes along feature axis.
 3. **Multi-Head Causal Attention** (4 heads, key dim 15) — learns temporal dependencies across MFCC frames.
 4. **Conv1D** (256 filters, kernel size 128, causal padding) — captures local temporal patterns.
 5. **Flatten → Dense (512) → Dropout (0.1) → Dense (1024)** — nonlinear classification head.
