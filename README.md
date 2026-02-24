@@ -86,7 +86,7 @@ After training, the model achieves high accuracy but produces overconfident prob
 
 1. **Amplitude normalization**: Mean-center and scale to [-1, 1]. Signals longer than 10s are truncated before normalization; shorter signals are normalized before zero-padding.
 2. **MFCC extraction**: 20 coefficients (n_fft=2048, hop_length=512) via librosa.
-3. **Delta features**: First and second-order deltas (width=9) appended to MFCCs, yielding a 60×314 input per recording.
+3. **Delta features**: First and second-order deltas (width=9) concatenated with MFCCs, yielding a 60×314 input per recording.
 4. **Stratified splits**: 75% train / 20% validation / 5% test, stratified by speaker to handle class imbalance.
 
 ---
