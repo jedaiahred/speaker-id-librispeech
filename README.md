@@ -41,7 +41,7 @@ A custom subclassed Keras model with a transformer-inspired design:
 3. **Multi-Head Causal Attention** (4 heads, key dim 15) — learns temporal dependencies across MFCC frames.
 4. **Conv1D** (256 filters, kernel size 128, causal padding) — captures local temporal patterns.
 5. **Flatten → Dense (512) → Dropout (0.1) → Dense (1024)** — nonlinear classification head.
-6. **Logits → Temperature Scaling → Softmax** — outputs calibrated class probabilities.
+6. **Logits → Temperature Scaling → Softmax** — outputs class probabilities.
 
 Orthogonal kernel regularization is applied to all three dense layers.
 
@@ -55,11 +55,11 @@ Orthogonal kernel regularization is applied to all three dense layers.
 | Batch Size | 128 |
 | Optimizer | Adam (β₁=0.95, β₂=0.97) |
 | Learning Rate | 1e-3, exponential decay (0.75) |
-| Loss | Scaled Brier Loss (scale=10,000) |
+| Loss | Brier Loss |
 | Mixed Precision | FP16 compute, FP32 accumulation |
 | Regularization | Orthogonal kernel reg, dropout (0.1) |
 
-**Brier loss** is used instead of cross-entropy to directly optimize probabilistic accuracy. The loss is scaled by 10,000 to prevent gradient underflow under FP16 mixed precision.
+**Brier loss** is used to directly optimize probabilistic accuracy. The loss is scaled by 10,000 to prevent gradient underflow under FP16 mixed precision.
 
 ---
 
@@ -84,22 +84,22 @@ After training, the model achieves high accuracy but produces overconfident prob
 
 ### Preprocessing
 
-1. **Amplitude normalization**: Mean-center and scale to [-1, 1]. Signals longer than 10s are truncated before normalization; shorter signals are normalized before zero-padding.
+1. **Amplitude normalization**: Mean-center and scale to [-1, 1]. Signals longer than 10 seconds are truncated before normalization; shorter signals are normalized before zero-padding.
 2. **MFCC extraction**: 20 coefficients (n_fft=2048, hop_length=512) via librosa.
 3. **Delta features**: First and second-order deltas (width=9) concatenated with MFCCs, yielding a 60×314 input per recording.
-4. **Stratified splits**: 75% train / 20% validation / 5% test, stratified by speaker to handle class imbalance.
+4. **Stratified splits**: 75% train / 20% validation / 5% test, stratified by speaker.
 
 ---
 
 ## Environment
 
-This project was trained on an **NVIDIA RTX 5060 Ti** (Blackwell architecture) using NVIDIA's NGC TensorFlow container. The `.devcontainer` directory provides a reproducible environment for VS Code + Docker.
+The `.devcontainer` directory provides a reproducible Docker container environment.
 
 ### Quick Start
 
-1. Clone the repo and open in VS Code.
-2. Reopen in the dev container (requires Docker and the NVIDIA Container Toolkit).
-3. Run the notebook — it downloads the LibriSpeech subsets automatically.
+1. Clone the repository.
+2. Build and launch the dev container (requires Docker and the NVIDIA Container Toolkit).
+3. Run speaker-identification.ipynb — it downloads the LibriSpeech subsets automatically.
 
 ---
 
